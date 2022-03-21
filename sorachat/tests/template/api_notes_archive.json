@@ -1,0 +1,83 @@
+{
+    "status":"Sucess",
+    "message":"",
+    "result": {
+        "0" : {
+            "note_id" : "199835377",
+            "username": "20541",
+            "realname": "足利直義",
+            "account" : "ashikaga_ty",
+            "reply_account":"@ashikaga_tu, @ashikaga_tf",
+            "tag" : "#南北朝 #TODO",
+            "note" : "下知、件の如し",
+            "timestamp" : "1530677200",
+            "todo_status" : "1",
+            "todo_limit" : "1530681320",
+            "read_note_status" : "0",
+            "apply_status" : "0",
+            "attached_files" : {
+                "0" : {
+                    "nfid": "262066",
+                    "nfname" : "199835377_72a5ad083026cfd0202e439b125bf9b6728c8ba0.txt",
+                    "nfrealname": "gechi1.txt"
+                },
+                "1" : {
+                    "nfid": "262069",
+                    "nfname" : "199835377_9bde4f1881359e7eaadba0ecd7b471670349193d.txt",
+                    "nfrealname": "gechi2.txt"
+                }
+            },
+            "dialog_flg": "0",
+            "retweet_src_id" : "",
+            "retweet_realname" : "",
+            "retweet_note" : "",
+            "retweet_timestamp" : ""
+        },
+        "1" : {
+            "note_id" : "199835374",
+            "username": "20541",
+            "realname": "足利直義",
+            "account" : "ashikaga_ty",
+            "reply_account":"@ashikaga_tu, @ashikaga_tf",
+            "tag" : "#認可願い #足利政権 #TODO",
+            "note" : "将軍の最終確認をお願いします CC: @momonoi_n",
+            "timestamp" : "1530677200",
+            "todo_status" : "1",
+            "todo_limit" : "1530681320",
+            "read_note_status" : "1",
+            "apply_status" : "1",
+            "dialog_flg": "0",
+            "retweet_src_id" : "",
+            "retweet_realname" : "",
+            "retweet_note" : "",
+            "retweet_timestamp" : ""
+        },
+        "2" : {
+            "note_id" : "199835377",
+            "username": "20541",
+            "realname": "足利直義",
+            "account" : "ashikaga_ty",
+            "reply_account":"@ashikaga_tu, @ashikaga_tf",
+            "tag" : "#南北朝 #TODO",
+            "note" : "副将軍からのリマインドです",
+            "timestamp" : "1530677200",
+            "todo_status" : "1",
+            "todo_limit" : "1530681320",
+            "read_note_status" : "0",
+            "apply_status" : "0",
+            "attached_files" : {
+                "0" : {
+                    "nfid": "262066",
+                    "nfname" : "199835377_9f067b3e2211bd5ad3081b45aeb20776d03ab386.txt",
+                    "nfrealname": "副将軍からのリマインド.txt"
+                }
+            },
+            "dialog_flg": "0",
+            "retweet_src_id" : "",
+            "retweet_realname" : "",
+            "retweet_note" : "",
+            "retweet_timestamp" : ""
+        }
+    },
+    "error":""
+}
