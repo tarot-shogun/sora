@@ -82,6 +82,7 @@ class SoraChat:
             auth=self.__auth
         )
         print(f'[HTTPS] <<< response.get uri: {uri}')
+        print(f'[HTTPS] <<< {response.content.decode("unicode-escape") }')
         return response
 
     def _http_post(self, uri_path, payload=None):
@@ -102,6 +103,7 @@ class SoraChat:
             auth=self.__auth
         )
         print(f'[HTTPS] <<< response.post uri: {uri}')
+        print(f'[HTTPS] <<< {response.content.decode("unicode-escape") }')
         return response
 
     def tweet(
