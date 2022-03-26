@@ -9,7 +9,7 @@ import base64
 import http
 import httpretty
 import parse
-from sorachat.sorachat import SoraChat
+from sorachat.sorachat import SoraChat, Coin
 
 
 class TestSoraChatBase(unittest.TestCase):
@@ -48,10 +48,23 @@ class TestSoraChatBase(unittest.TestCase):
         query_dictionary = urllib.parse.parse_qs(query)
         if not self._check_auth(request.headers):
             response_headers['status'] = http.HTTPStatus.UNAUTHORIZED
-            body = self._load_template_json('api_tweet_add_failed.json')
-        if not self._check_tweet_len(query_dictionary.get('sn_tweet')[0]):
+            body = self._load_template_json('api_tweet_add_invalid_auth.json')
+        # TODO(Unknown): オブジェクト指向的にリクエストクラスを用意したほうが良い。
+        #                TestCase.has_repeat_reserve_together では意味が通じない。
+        if self._has_repeat_reserve_together(
+                query_dictionary.get('reserve_date'),
+                query_dictionary.get('repeat_week'),
+                query_dictionary.get('repeat_time')):
+            body = self._load_template_json(
+                'api_tweet_add_repeat_reserve_together.json')
+        if self._has_invalid_stamp_id(
+                query_dictionary.get('stamp_id')):
+            body = self._load_template_json(
+                'api_tweet_add_invalid_stamp_id.json')
+        if not self._check_tweet_len(query_dictionary.get('sn_tweet')):
             # response_headers['status'] = http.HTTPStatus.OK
-            body = self._load_template_json('api_tweet_add_failed.json')
+            body = self._load_template_json(
+                'api_tweet_add_too_short_message.json')
         else:
             body = self._load_template_json('api_tweet_add.json')
         return (response_headers['status'], response_headers, body)
@@ -71,6 +84,14 @@ class TestSoraChatBase(unittest.TestCase):
         actual_auth = (decode_auth[0], decode_auth[1])
         expected_auth_list = [('user_id', 'password')]
         return actual_auth in expected_auth_list
+
+    def _has_repeat_reserve_together(self, reserve_date, repeat_week,
+                                     repeat_time):
+        return reserve_date is not None and (repeat_week is not None
+                                             or repeat_time is not None)
+
+    def _has_invalid_stamp_id(self, stamp_id):
+        return stamp_id not in Coin, None
 
     def _check_tweet_len(self, tweet):
         tweet_len_min = 3
