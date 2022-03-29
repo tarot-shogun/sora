@@ -9,7 +9,7 @@ import base64
 import http
 import httpretty
 import parse
-from sorachat.sorachat import SoraChat, Coin
+import sorachat
 
 
 class TestSoraChatBase(unittest.TestCase):
@@ -57,8 +57,7 @@ class TestSoraChatBase(unittest.TestCase):
                 query_dictionary.get('repeat_time')):
             body = self._load_template_json(
                 'api_tweet_add_repeat_reserve_together.json')
-        if self._has_invalid_stamp_id(
-                query_dictionary.get('stamp_id')):
+        if self._has_invalid_stamp_id(query_dictionary.get('stamp_id')):
             body = self._load_template_json(
                 'api_tweet_add_invalid_stamp_id.json')
         if not self._check_tweet_len(query_dictionary.get('sn_tweet')[0]):
@@ -73,7 +72,8 @@ class TestSoraChatBase(unittest.TestCase):
     # If you define this function in the private method,
     # you will not be able to call it
     # when you call the protect function from a child class.
-    def _check_auth(self, headers):
+    @staticmethod
+    def _check_auth(headers):
         auth = headers.get('Authorization')
         if auth is None:
             return False
@@ -85,17 +85,20 @@ class TestSoraChatBase(unittest.TestCase):
         expected_auth_list = [('user_id', 'password')]
         return actual_auth in expected_auth_list
 
-    def _has_repeat_reserve_together(self, reserve_date, repeat_week,
+    @staticmethod
+    def _has_repeat_reserve_together(reserve_date, repeat_week,
                                      repeat_time):
         return reserve_date is not None and (repeat_week is not None
                                              or repeat_time is not None)
 
-    def _has_invalid_stamp_id(self, stamp_id):
+    @staticmethod
+    def _has_invalid_stamp_id(stamp_id):
         if stamp_id is None:
             return False
-        return stamp_id[0] not in Coin
+        return stamp_id[0] not in sorachat.Coin
 
-    def _check_tweet_len(self, tweet):
+    @staticmethod
+    def _check_tweet_len(tweet):
         tweet_len_min = 3
         return len(tweet) > tweet_len_min
 
@@ -109,7 +112,8 @@ class TestSoraChatBase(unittest.TestCase):
         body = self._load_template_json('api_notes_archive.json')
         return (response_headers['status'], response_headers, body)
 
-    def _load_template_json(self, file):
+    @staticmethod
+    def _load_template_json(file):
         path = os.path.join(os.path.dirname(__file__), 'template', file)
 
         if not os.path.exists(path):
@@ -138,8 +142,8 @@ class TestSoraChat(TestSoraChatBase):
     def test_tweet_only_message(self):
         """ツイート本文だけを指定してtweet()を呼び出す
         """
-        sorachat = SoraChat(r'example.com', (r'user_id', r'password'))
-        response = sorachat.tweet(r'おはよう')
+        client = sorachat.SoraChat(r'example.com', (r'user_id', r'password'))
+        response = client.tweet(r'おはよう')
         dictionary = json.loads(response.text)
 
         self.assertEqual(http.HTTPStatus.OK, response.status_code)
@@ -148,8 +152,8 @@ class TestSoraChat(TestSoraChatBase):
     def test_tweet_short_message(self):
         """3文字以下のツイート本文でtweet()を呼び出す
         """
-        sorachat = SoraChat(r'example.com', (r'user_id', r'password'))
-        response = sorachat.tweet(r'おはよ')
+        client = sorachat.SoraChat(r'example.com', (r'user_id', r'password'))
+        response = client.tweet(r'おはよ')
         dictionary = json.loads(response.text)
 
         # self.assertEqual(HTTPStatus.OK, response.status_code)
@@ -158,8 +162,8 @@ class TestSoraChat(TestSoraChatBase):
     def test_search_tweets(self):
         """正しいクエリを指定してsearch()を呼び出す
         """
-        sorachat = SoraChat(r'example.com', (r'user_id', r'password'))
-        response = sorachat.search_tweets(r'{}')
+        client = sorachat.SoraChat(r'example.com', (r'user_id', r'password'))
+        response = client.search_tweets(r'{}')
         dictionary = json.loads(response.text)
         tweets = dictionary.get("result").get("list")
 
@@ -176,6 +180,7 @@ class TestSoraChatNoResult(TestSoraChatBase):
     Args:
         TestSoraChatBase (TestSoraChatBase): テスト用モジュールのベースクラス
     """
+
     # It is inconvenient to change the callback function without inheritance.
     def _callback_api_note_search(self, request, uri, response_headers):
         """ツイート探索結果が0となるようにコールバックを上書きする
@@ -186,8 +191,8 @@ class TestSoraChatNoResult(TestSoraChatBase):
     def test_search_tweets_no_result(self):
         """search()関数の呼び出し結果がツイート検索結果が0の場合
         """
-        sorachat = SoraChat(r'example.com', (r'user_id', r'password'))
-        response = sorachat.search_tweets(r'おはよ')
+        client = sorachat.SoraChat(r'example.com', (r'user_id', r'password'))
+        response = client.search_tweets(r'おはよ')
         dictionary = json.loads(response.text)
         tweets = dictionary.get("result", {}).get("list")
 
