@@ -1,5 +1,4 @@
 #!/usr/bin/env python3
-
 """PythonのSoraChatモジュール
 
 このモジュールはREST APIとレスポンスをラップすることで
@@ -49,7 +48,8 @@ class SoraChat:
         self.__base_url = 'https://' + self.__host
         self.__auth = auth
 
-    def _remove_fields_no_value(self, payload):
+    @staticmethod
+    def _remove_fields_no_value(payload):
         """ペイロードからフィールド値がNoneの要素を削除する
 
         Args:
@@ -76,11 +76,7 @@ class SoraChat:
         """
         uri = urllib.parse.urljoin(self.__base_url, uri_path)
         print(f'[HTTPS] >>> request.get uri: {uri}')
-        response = requests.get(
-            uri,
-            params=payload,
-            auth=self.__auth
-        )
+        response = requests.get(uri, params=payload, auth=self.__auth)
         print(f'[HTTPS] <<< response.get uri: {uri}')
         print(f'[HTTPS] <<< {response.content.decode("unicode-escape") }')
         return response
@@ -97,20 +93,12 @@ class SoraChat:
         """
         uri = urllib.parse.urljoin(self.__base_url, uri_path)
         print(f'[HTTPS] >>> request.post uri: {uri}')
-        response = requests.post(
-            uri,
-            params=payload,
-            auth=self.__auth
-        )
+        response = requests.post(uri, params=payload, auth=self.__auth)
         print(f'[HTTPS] <<< response.post uri: {uri}')
         print(f'[HTTPS] <<< {response.content.decode("unicode-escape") }')
         return response
 
-    def tweet(
-            self,
-            tweet,
-            todo_limit=None,
-            stamp_id=None):
+    def tweet(self, tweet, todo_limit=None, stamp_id=None):
         """ツイートを投稿する
 
         Args:
@@ -166,10 +154,7 @@ class SoraChat:
             requests.models.Response: HTTPレスポンス
         """
         assert coin_type in Coin
-        response = self.tweet(
-            tweet=tweet,
-            stamp_id=coin_type
-        )
+        response = self.tweet(tweet=tweet, stamp_id=coin_type)
         return response
 
     def list_my_tweets(self):
