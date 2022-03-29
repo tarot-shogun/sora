@@ -1,0 +1,14 @@
+name: commitlint
+on: 
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  commitlint:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          fetch-depth: ${ git rev-list --count origin }
+      - uses: wagoid/commitlint-github-action@v4
