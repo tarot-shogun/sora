@@ -4,13 +4,19 @@ import unittest
 import urllib
 import json
 import os
+import sys
 import re
 import base64
 import http
 import logging
 import httpretty
 import parse
-import sorachat
+
+# pylint: disable=wrong-import-position
+from pylint.config import find_pylintrc
+sys.path.append(os.path.join(os.path.dirname(find_pylintrc()), 'sorachat'))
+import sorachat  # noqa: E402
+# pylint: enable=wrong-import-position
 
 
 class TestSoraChatBase(unittest.TestCase):
@@ -25,7 +31,7 @@ class TestSoraChatBase(unittest.TestCase):
         self._host = r'example.com'
 
     def setUp(self):
-        httpretty.enable(verbose=False, allow_net_connect=False)
+        httpretty.enable(verbose=True, allow_net_connect=False)
         registration_list = [
             (r'api/tweet/add', httpretty.POST),
             (r'api/note/search', httpretty.GET),
