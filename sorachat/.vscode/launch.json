@@ -8,8 +8,7 @@
             "name": "Python: Current File",
             "type": "python",
             "request": "launch",
-            "program": "${workspaceFolder}/tests/test_sorachat.py",
-            "cwd": "${workspaceFolder}",
+            "program": "${file}",
             "console": "integratedTerminal",
             "env": {
                 "PYTHONPATH": "${workspaceFolder}/sorachat"
