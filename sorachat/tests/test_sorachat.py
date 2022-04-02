@@ -25,7 +25,7 @@ class TestSoraChatBase(unittest.TestCase):
         self._host = r'example.com'
 
     def setUp(self):
-        httpretty.enable(verbose=True, allow_net_connect=False)
+        httpretty.enable(verbose=False, allow_net_connect=False)
         registration_list = [
             (r'api/tweet/add', httpretty.POST),
             (r'api/note/search', httpretty.GET),
