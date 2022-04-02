@@ -6,7 +6,10 @@
 """
 import enum
 import urllib.parse
+import logging
 import requests
+
+logger = logging.getLogger(__name__)
 
 
 class Coin(enum.Enum):
@@ -75,10 +78,11 @@ class SoraChat:
             requests.models.Response: HTTPレスポンス
         """
         uri = urllib.parse.urljoin(self.__base_url, uri_path)
-        print(f'[HTTPS] >>> request.get uri: {uri}')
+        logger.info('[HTTPS] >>> request.get uri: %s', uri)
         response = requests.get(uri, params=payload, auth=self.__auth)
-        print(f'[HTTPS] <<< response.get uri: {uri}')
-        print(f'[HTTPS] <<< {response.content.decode("unicode-escape") }')
+        logger.info('[HTTPS] <<< response.get uri: %s', uri)
+        logger.info('[HTTPS] <<< %s',
+                    response.content.decode("unicode-escape"))
         return response
 
     def _http_post(self, uri_path, payload=None):
@@ -92,10 +96,11 @@ class SoraChat:
             requests.models.Response: HTTPレスポンス
         """
         uri = urllib.parse.urljoin(self.__base_url, uri_path)
-        print(f'[HTTPS] >>> request.post uri: {uri}')
+        logger.info('[HTTPS] >>> request.get uri: %s', uri)
         response = requests.post(uri, params=payload, auth=self.__auth)
-        print(f'[HTTPS] <<< response.post uri: {uri}')
-        print(f'[HTTPS] <<< {response.content.decode("unicode-escape") }')
+        logger.info('[HTTPS] <<< response.get uri: %s', uri)
+        logger.info('[HTTPS] <<< %s',
+                    response.content.decode("unicode-escape"))
         return response
 
     def tweet(self, tweet, todo_limit=None, stamp_id=None):

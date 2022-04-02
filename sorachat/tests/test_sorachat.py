@@ -7,6 +7,7 @@ import os
 import re
 import base64
 import http
+import logging
 import httpretty
 import parse
 import sorachat
@@ -201,4 +202,6 @@ class TestSoraChatNoResult(TestSoraChatBase):
 
 
 if __name__ == "__main__":
+    logging.basicConfig()
+    logging.getLogger('sorachat').setLevel(level=logging.DEBUG)
     unittest.main()
