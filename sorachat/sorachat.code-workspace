@@ -3,5 +3,27 @@
 		{
 			"path": "."
 		}
-	]
+	],
+	"settings": {
+		"python.testing.unittestArgs": [
+			"-v",
+			"-s",
+			"./tests",
+			"-p",
+			"test_*.py"
+		],
+		"python.testing.pytestEnabled": false,
+		"python.testing.unittestEnabled": true,
+		"python.formatting.provider": "yapf",
+		"cSpell.words": [
+			"httpretty",
+			"uniitest",
+			"pylintrc",
+			"yapf",
+			"pytest",
+			"KAIZEN",
+			"SHOBAI",
+			"sorachat",
+		]
+	}
 }
