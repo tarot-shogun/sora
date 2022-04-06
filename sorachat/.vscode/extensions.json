@@ -1,7 +1,6 @@
 {
     "recommendations": [
         "ms-python.pylint",
-        "xyz.local-history",
         "DavidAnson.vscode-markdownlint",
         "streetsidesoftware.code-spell-checker"
     ]
