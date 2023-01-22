@@ -1,0 +1,100 @@
+VERSION 1.0 CLASS
+BEGIN
+  MultiUse = -1  'True
+END
+Attribute VB_Name = "Sheet3"
+Attribute VB_GlobalNameSpace = False
+Attribute VB_Creatable = False
+Attribute VB_PredeclaredId = True
+Attribute VB_Exposed = True
+Option Explicit
+
+
+' @breif 日報提出状況を閲覧するためのURL
+Property Get DailyStatusUrl() As String
+    
+    Dim uri As String
+    uri = Range("DailyStatusUrl").Value
+    
+    If uri = "" Then
+        Const DEFAULT_URL = "http://127.0.0.1:5500/test/live_server/index.html"
+        DailyStatusUrl = DEFAULT_URL
+    Else
+        DailyStatusUrl = uri
+    End If
+    
+End Property
+
+
+' @breif 日報提出状況表(Getter)
+Property Get DailyStatusRange() As Variant
+
+    DailyStatusRange = Range("DailyStatusTable")
+    
+End Property
+
+
+' @breif 日報提出状況表(Setter)
+Property Let DailyStatusRange(table As Variant)
+
+    Range("DailyStatusTable") = table
+    
+End Property
+
+
+
+' @breif 「日報提出状況を確認」ボタン押下時の処理
+Public Sub OnClickedCheckButton()
+
+    Dim status As Collection
+    Set status = GetDailyReportStatusList(DailyStatusUrl)
+    
+    UpdateDailyStatusTable status
+
+End Sub
+
+
+' @breif シートの日報提出状況表を更新する
+' @param[in] list 日報提出状況リスト
+' @todo TODO(xxxxxxxx_x): 関数が長いので分割を検討する
+Function UpdateDailyStatusTable(list As Collection)
+
+    Dim table As Variant
+    table = DailyStatusRange
+    
+    Dim i As Long
+    Const HEADER_LINES As Long = 1 ' 今の実装ではヘッダーが複数行の場合は動かないのであまりこの定数に意味がない
+    For i = 1 + HEADER_LINES To UBound(table, 1)
+
+        Dim id As String
+        Const ID_COLUMN As Long = 1
+        id = table(i, ID_COLUMN)
+
+        Dim status As Dictionary
+        Set status = SearchDailyReportStatusById(list, id)
+        
+        If status Is Nothing Then
+            ' TODO(xxxxxxxx_x): ログくらいは出力すべき
+            ' MsgBox "リストから情報を取得できませんでした。 (社員ID:" & id & ")"
+        Else
+            Dim j As Long
+            Const KEY_COLUMNS As Long = 1
+            For j = 1 + KEY_COLUMNS To UBound(table, 2)
+            
+                Const HEADER_ROW = 1
+                Dim key As Variant
+                key = table(HEADER_ROW, j)
+                If VarType(key) <> vbString Then
+                    key = CStr(key)
+                End If
+                table(i, j) = status.Item(key)
+            Next
+        End If
+    
+    Next
+
+    DailyStatusRange = table
+
+End Function
+
+
