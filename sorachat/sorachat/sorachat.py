@@ -79,7 +79,7 @@ class SoraChat:
         """
         uri = urllib.parse.urljoin(self.__base_url, uri_path)
         logger.info('[HTTPS] >>> request.get uri: %s', uri)
-        response = requests.get(uri, params=payload, auth=self.__auth)
+        response = requests.get(uri, params=payload, auth=self.__auth, timeout=30)
         logger.info('[HTTPS] <<< response.get uri: %s', uri)
         logger.info('[HTTPS] <<< %s',
                     response.content.decode("unicode-escape"))
@@ -97,7 +97,7 @@ class SoraChat:
         """
         uri = urllib.parse.urljoin(self.__base_url, uri_path)
         logger.info('[HTTPS] >>> request.get uri: %s', uri)
-        response = requests.post(uri, params=payload, auth=self.__auth)
+        response = requests.post(uri, params=payload, auth=self.__auth, timeout=30)
         logger.info('[HTTPS] <<< response.get uri: %s', uri)
         logger.info('[HTTPS] <<< %s',
                     response.content.decode("unicode-escape"))
